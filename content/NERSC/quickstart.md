@@ -46,13 +46,67 @@ scratch type:
 The scratch is optimized for I/O and each user is alotted 10TB of space making the local
 scratch ideal for handling large _temporary_ files. I emphasize temporary here because  
 the scratch directories are purged every 2-3 months. 
-## Loading packages
 
-## Transfering between NERSC and a local machine
-At times it will be important to transfer files between NERSC and 
+## Loading modules
+
+NERSC comes with many of your favorite packages ready to load, 
+no compiling required! NERSC does this with the help of the module utility.
+The module utility manages the MANPATH andbasically tells the system where 
+to look for executables. 
+
+Lets do an example. We will begin by looking for the main
+Quantum Espresso executable, pw.x (pw = plane wave).
+
+Make sure you are logged in to a NERSC system and type:
+
+    which pw.x
+
+NERSC should tell you its looked a bunch of places but cant locate
+pw.x. Now type:
+
+    module load espresso
+    which pw.x
+
+The first line updates the manpath to point to a global quantum espresso
+installation. The second line confirms that the system can now find 
+pw.x. The module utility allows users to load, remove, list and, search
+for different programs already compiled on NERSC. If you are new to the module,
+utility, please take a look at the NERSC [documentation](http://www.nersc.gov/users/software/user-environment/modules/).
+
+## Transfering files
+
+At some point, you will need to transfer files between NERSC and 
 your local machine (laptop). The simplest way to do so is with the 
 scp command.
 
-To transfer from your 
+To transfer files from NERSC to your local machine
 
-## Running a first job
+    scp username@dtn01.nersc.gov:/remote/path/myfile.txt /local/path
+
+To transfer files to NERSC from your loacl machine
+
+    scp /loca/path/myfile.txt user_name@dtn01.nersc.gov:/remote/path
+
+Please note, both commands should be run from your local machine. You can read
+more about these commands [here](http://www.nersc.gov/users/storage-and-file-systems/transferring-data/scp-sftp/)
+
+## Hands On: Running a job
+We will now put all the above steps to gether and, we walk through 
+a very simple calculaton on NERSC. As our example, we will compute the 
+ground state energy of bulk Silicon in Quantum Espresso. 
+
+If you havent already, begin by logging in to edison and navigating to the 
+scratch directory:
+
+    ssh username@edison.nersc.gov
+    cd $SCRATCH
+
+Create a new director called silicon and navigate inside:
+
+    mkdir silicon
+    cd silicon
+
+We now need to generate our Quantum Espresso input and upload an 
+appropriate pseudopotential. 
+
+{{%attachments style="orange" /%}}
